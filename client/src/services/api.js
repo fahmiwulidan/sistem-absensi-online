@@ -1,4 +1,5 @@
-const API_BASE = '/api';
+const BASE_URL = import.meta.env.VITE_API_URL || '';
+const API_BASE = `${BASE_URL}/api`;
 
 /**
  * Helper to get current auth token
