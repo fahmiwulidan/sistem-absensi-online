@@ -1,0 +1,16 @@
+{
+  "name": "sistem-absensi-online",
+  "version": "1.0.0",
+  "description": "Sistem Informasi Absensi Online Sekolah - SMA Harapan Bangsa",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "client": "cd client && npm run dev",
+    "server": "cd server && npm run dev",
+    "install:all": "npm install && cd client && npm install && cd ../server && npm install",
+    "seed": "cd server && npm run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

@@ -1,0 +1,86 @@
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.ui-button:focus {
+  outline: 2px solid var(--color-primary-400);
+  outline-offset: 2px;
+}
+
+.ui-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Variants */
+.ui-button--primary {
+  background-color: var(--color-primary-600);
+  color: var(--color-white);
+}
+.ui-button--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-700);
+}
+
+.ui-button--secondary {
+  background-color: var(--color-primary-50);
+  color: var(--color-primary-700);
+}
+.ui-button--secondary:hover:not(:disabled) {
+  background-color: var(--color-primary-100);
+}
+
+.ui-button--outline {
+  background-color: transparent;
+  border-color: var(--color-gray-300);
+  color: var(--color-gray-700);
+}
+.ui-button--outline:hover:not(:disabled) {
+  background-color: var(--color-gray-50);
+}
+
+.ui-button--ghost {
+  background-color: transparent;
+  color: var(--color-gray-600);
+}
+.ui-button--ghost:hover:not(:disabled) {
+  background-color: var(--color-gray-100);
+}
+
+/* Sizes */
+.ui-button--sm {
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+}
+.ui-button--md {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+}
+.ui-button--lg {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+}
+
+/* Modifiers */
+.ui-button--full {
+  width: 100%;
+}
+
+.ui-button__spinner {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
