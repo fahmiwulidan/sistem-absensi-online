@@ -1,39 +1,44 @@
 require('dotenv').config();
 const { Pool, types } = require('pg');
 
-// Parse PostgreSQL DATE (OID 1082) as plain string 'YYYY-MM-DD' to prevent timezone conversion shifts
+// Parse PostgreSQL DATE (OID 1082) as plain string 'YYYY-MM-DD'
 types.setTypeParser(1082, (val) => val);
 
-const pool = new Pool({
-  host: process.env.DB_HOST || 'localhost',
-  port: parseInt(process.env.DB_PORT) || 5432,
-  database: process.env.DB_NAME || 'absensi_db',
-  user: process.env.DB_USER || 'postgres',
-  password: process.env.DB_PASSWORD || 'fahmi123',
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
-});
+// Konfigurasi Pool: Mengutamakan DATABASE_URL dari Neon/Vercel
+const isProduction = process.env.NODE_ENV === 'production' || process.env.DATABASE_URL;
+
+const pool = new Pool(
+  process.env.DATABASE_URL
+    ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false
+        }
+      }
+    : {
+        host: process.env.DB_HOST || 'localhost',
+        port: parseInt(process.env.DB_PORT) || 5432,
+        database: process.env.DB_NAME || 'absensi_db',
+        user: process.env.DB_USER || 'postgres',
+        password: process.env.DB_PASSWORD || 'fahmi123',
+        max: 20,
+        idleTimeoutMillis: 30000,
+        connectionTimeoutMillis: 5000,
+      }
+);
 
 // Test connection on startup
 let dbConnected = false;
 pool.connect((err, client, release) => {
   if (err) {
-    console.error('⚠️  Gagal terhubung ke PostgreSQL:', err.message);
-    console.error('   Database: ' + (process.env.DB_NAME || 'absensi_db'));
-    console.error('   User: ' + (process.env.DB_USER || 'postgres'));
-    console.error('   Periksa: PostgreSQL service running, database created');
-    console.error('   Server tetap berjalan untuk development tanpa database');
+    console.error('⚠️ Gagal terhubung ke PostgreSQL:', err.message);
   } else {
-    console.log('✅ Terhubung ke PostgreSQL database:', process.env.DB_NAME || 'absensi_db');
+    console.log('✅ Terhubung ke PostgreSQL database');
     dbConnected = true;
     release();
   }
 });
 
-/**
- * Helper query function - returns rows (async)
- */
 async function query(text, params) {
   const start = Date.now();
   try {
@@ -49,9 +54,6 @@ async function query(text, params) {
   }
 }
 
-/**
- * Get a client from pool for transactions
- */
 async function getClient() {
   return pool.connect();
 }
