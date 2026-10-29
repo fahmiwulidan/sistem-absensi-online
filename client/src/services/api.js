@@ -1,4 +1,6 @@
-const BASE_URL = import.meta.env.VITE_API_URL || '';
+const rawUrl = import.meta.env.VITE_API_URL || '';
+// Hapus tanda '/' di akhir URL jika tidak sengaja terisi
+const BASE_URL = rawUrl.replace(/\/+$/, '');
 const API_BASE = `${BASE_URL}/api`;
 
 /**
